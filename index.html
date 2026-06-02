@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SupplyHouse — Token Explorer</title>
+<meta name="description" content="Reference for the SupplyHouse design token system — the chain from primitive to component, typography roles, and the responsive scale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body id="top">
+
+<header class="site-hd">
+  <a class="brand" href="#top">SH<span>/</span>tokens</a>
+  <nav class="site-nav">
+    <a href="#rationale">Rationale</a>
+    <a href="#explorer">Explorer</a>
+    <a href="#typography">Typography</a>
+    <a href="#scale">Scale</a>
+  </nav>
+  <span class="site-meta">Design System · v4 · 2026</span>
+</header>
+
+<main>
+
+  <!-- ===================== RATIONALE / LANDING ===================== -->
+  <section id="rationale" class="hero">
+    <div class="hero-top">
+      <a class="hero-cell dashed" href="#explorer"><span class="lbl">The chain — primitive → component</span><span class="arr">↗</span></a>
+      <a class="hero-cell dashed" href="#typography"><span class="lbl">Typography &amp; responsive scale</span><span class="arr">↗</span></a>
+    </div>
+
+    <h1 class="hero-title">Token<br>System<em>.</em></h1>
+
+    <div class="hero-strip">
+      <span class="kicker">SupplyHouse Design System</span>
+      <span class="arr">→</span>
+      <span>Primitives / Semantic / Components</span>
+      <span class="muted" style="margin-left:auto">Reference as of 2026 · v4</span>
+    </div>
+
+    <div class="rat-grid">
+      <article class="rat">
+        <h3>What this is</h3>
+        <p>A structured reference for every token in the SupplyHouse design system — Tier 1 primitives, Tier 2 semantic tokens, and the typography roles. Each lives in a single <b>chain</b>: a raw value gains meaning, is shaped into a stateful pattern, and is consumed by a component.</p>
+        <p>A living document reflecting the architecture as of 2026, including open flags still needing team discussion.</p>
+      </article>
+
+      <article class="rat">
+        <h3>Principles</h3>
+        <ul>
+          <li><b>Audit-first</b> — tokens only created when a confirmed consumer existed. No speculative tokens.</li>
+          <li><b>Decision-surfacing</b> — building the system forces previously silent component-level decisions into the open for team alignment.</li>
+          <li><b>SupplyHouse-specific</b> — TurboTrack, commerce CTA, B2B role tiers, multi-type accordions do not exist in any reference system. The organization reflects this product, not a template.</li>
+          <li><b>Migration-friendly</b> — makes sense of what already exists in Figma and production. Design and dev can converge incrementally.</li>
+        </ul>
+      </article>
+
+      <article class="rat">
+        <h3>Three-tier architecture</h3>
+        <ul>
+          <li><b>T1 Primitives</b> — raw values. <code>orange.500 = #F15C02</code>. Never used by components directly.</li>
+          <li><b>T2 Semantic</b> — purpose-based tokens. The design-to-dev contract.</li>
+          <li><b>T3 Component</b> — component-scoped tokens. Started: spacing &amp; size for accordion, modal, tooltip, stepper.</li>
+        </ul>
+        <p>A single primitive change propagates through the chain without a component sweep.</p>
+      </article>
+
+      <article class="rat">
+        <h3>Components in scope</h3>
+        <div class="chips">
+          <span class="chip-c">Buttons</span><span class="chip-c">Link</span><span class="chip-c">Breadcrumb</span><span class="chip-c">Pagination</span><span class="chip-c">Form field</span><span class="chip-c">Menu item</span><span class="chip-c">Radio</span><span class="chip-c">Checkbox</span><span class="chip-c">Pill</span><span class="chip-c">Chip</span><span class="chip-c">Selectable card</span><span class="chip-c">Tabs</span><span class="chip-c">Switch</span><span class="chip-c">Toggle</span><span class="chip-c">Accordion</span><span class="chip-c">Modal</span><span class="chip-c">Tooltip</span><span class="chip-c">Stepper</span><span class="chip-c">Badges</span><span class="chip-c">Toast</span><span class="chip-c">Alert</span><span class="chip-c">Fulfillment</span>
+        </div>
+        <p class="muted" style="font-size:12px;margin-top:8px">A catalog of the components covered today (36 variants). Switch ≠ Toggle at SupplyHouse: Switch = binary on/off; Toggle = segmented view selector.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== EXPLORER ===================== -->
+  <section id="explorer">
+    <div class="sec-hd">
+      <span class="kicker">The chain</span>
+      <h2>Primitive → meaning → pattern → component</h2>
+      <p>Read left → right: a <b>primitive</b> gains <b>meaning</b> (②), is shaped into a stateful <b>pattern</b> (③), becomes a <b>component token</b> (④), and is <b>used</b> by components (⑤). Click anything to filter every column to just its chain.</p>
+    </div>
+    <div class="trace-bar"><span>Traced: <span id="sel">nothing</span></span><button id="clear" disabled>clear</button></div>
+    <div class="cols">
+      <div class="col"><div class="ch"><b><span class="n">①</span>Tier 1 · Primitive</b><small>the raw value — grouped by ramp</small></div><div class="list" id="c1"></div></div>
+      <div class="col"><div class="ch"><b><span class="n">②</span>Tier 2 · Foundation / Identity</b><small>the meaning — global purposes</small></div><div class="list" id="c2"></div></div>
+      <div class="col"><div class="ch"><b><span class="n">③</span>Tier 2 · Pattern</b><small>the contract — multi-state recipes</small></div><div class="list" id="c3"></div></div>
+      <div class="col"><div class="ch"><b><span class="n">④</span>Tier 3 · Component token</b><small>component-scoped — spacing &amp; size</small></div><div class="list" id="c4"></div></div>
+      <div class="col"><div class="ch"><b><span class="n">⑤</span>Usage · Component</b><small>where it shows up — by family</small></div><div class="list" id="c5"></div></div>
+    </div>
+  </section>
+
+  <!-- ===================== TYPOGRAPHY ===================== -->
+  <section id="typography">
+    <div class="sec-hd">
+      <span class="kicker">Type roles</span>
+      <h2>Typography — specimen</h2>
+      <p>Composite text styles, WEB scale. Variants: <b>normal · bold · bold-tight</b> (Body1) <b>· bold-caps</b> (uppercase). Each sample shows real size · weight · line-height · case; the face falls back to Inter where Maison Neue isn't installed. All chips chain to Tier 1.</p>
+    </div>
+    <div id="typolist"></div>
+  </section>
+
+  <!-- ===================== RESPONSIVE SCALE ===================== -->
+  <section id="scale">
+    <div class="sec-hd">
+      <span class="kicker">Foundation template</span>
+      <h2>Responsive type scale</h2>
+      <p>How each role sizes across breakpoints. A <b>proposed</b>, designer-overridable ramp: display/headline compress toward small screens; <b>body &amp; caption stay constant</b> for readability. Line-height is a percentage, so it holds at every breakpoint.</p>
+    </div>
+    <div class="scale-wrap"><div id="scaletable"></div></div>
+    <p class="scale-note"><b>B1 equals the current static scale</b>, so desktop is unchanged — this only adds smaller-breakpoint behaviour. Open: the <b>1200–1399</b> band is unassigned (recommend folding into B1), and the numbers are a starting point to agree on.</p>
+  </section>
+
+</main>
+
+<footer class="site-ft">
+  <span class="mark">SH<span>/</span>tokens</span>
+  <span>SupplyHouse Design System · v4</span>
+  <span>Generated 2026 · primitive → component</span>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
