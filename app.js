@@ -30,10 +30,11 @@ const M1=[...inUse],
 
 const SUBLAYER={'color.text':'Foundations','color.bg':'Foundations','color.border':'Foundations','color.icon':'Foundations','color.focus':'Foundations',
   'color.commerce':'Identities','color.primary':'Identities','color.feedback':'Communication','color.status':'Communication',
-  'color.fulfillment':'Domain','color.role':'Domain','color.invite':'Domain','stroke.focus':'Stroke','stroke.feedback':'Stroke','stroke.width':'Stroke','stroke.fulfillment':'Stroke'};
+  'color.fulfillment':'Domain','color.role':'Domain','color.invite':'Domain','stroke.focus':'Stroke','stroke.feedback':'Stroke','stroke.width':'Stroke','stroke.fulfillment':'Stroke',
+  'effect.semantic':'Effects'};
 const ORDER={
   1:['color.gray','color.blue','color.orange','color.red','color.green','color.yellow','color.brown','spacing','stroke.width','stroke.style'],
-  2:['color.text','color.bg','color.border','color.icon','color.focus','color.commerce','color.primary','color.feedback','color.status','color.fulfillment','color.role','color.invite','stroke.focus','stroke.feedback','stroke.width','stroke.fulfillment'],
+  2:['color.text','color.bg','color.border','color.icon','color.focus','color.commerce','color.primary','color.feedback','color.status','color.fulfillment','color.role','color.invite','stroke.focus','stroke.feedback','stroke.width','stroke.fulfillment','effect.semantic'],
   3:['text','form-field','form-control','action-button','menu-item','navigation','selectable','selectable-card','removable','toggle','switch','breadcrumb'],
   4:['accordion','modal','tooltip','quantity-stepper'],
   5:['button','link','badge','radio','checkbox','switch','toggle','selectable pill','removable chip','selectable card','menu item','navigation tabs','breadcrumb','pagination','form field','rating stars','toast','alert','accordion','modal','tooltip','fulfillment','quantity stepper']
@@ -72,7 +73,9 @@ function buildCol(elId,members,col){
   for(const k of order){
     if(col===2){ const sl=SUBLAYER[k]||'Other'; if(sl!==lastSub){ html+='<div class=sub>'+sl+'</div>'; lastSub=sl; } }
     html+='<div class=gh><span class=gn>'+(col===1?k.replace('color.',''):k)+'</span><span class=gc>'+groups[k].length+'</span></div>';
-    html+=groups[k].map(x=>itemRow(x,col)).join('');
+    let arr=groups[k];
+    if(col===1){ const seg=p=>p.split('.').pop(); if(arr.every(p=>/^\d+$/.test(seg(p)))) arr=arr.slice().sort((a,b)=>(+seg(a))-(+seg(b))); }
+    html+=arr.map(x=>itemRow(x,col)).join('');
   }
   el.innerHTML=html;
 }
@@ -126,6 +129,28 @@ function renderScale(){
   host.innerHTML='<table class=scale><thead>'+th+'</thead><tbody>'+rows+'</tbody></table>';
 }
 
+/* ---------- effects specimen ---------- */
+function renderEffects(){
+  const host=document.getElementById('fxlist'); if(!host||typeof EFFECTS==='undefined') return;
+  const groups={}; EFFECTS.forEach(e=>{ (groups[e.cat]=groups[e.cat]||[]).push(e); });
+  const order=['Buttons','Containers / Elevation','Lines / Dividers','Focus','Unconfirmed'];
+  const cats=order.filter(c=>groups[c]).concat(Object.keys(groups).filter(c=>!order.includes(c)));
+  let html='';
+  for(const cat of cats){
+    html+='<div class=fx-cat>'+cat+'</div><div class=fx-grid>';
+    for(const e of groups[cat]){
+      const flag=e.flag?'<span class=fx-flag>'+(typeof e.flag==='string'?e.flag:'flag')+'</span>':'';
+      html+='<div class=fx-card>'
+        +'<div class=fx-swatch><span class=fx-box style="box-shadow:'+e.css+'"></span></div>'
+        +'<div class=fx-meta><div class=fx-token>'+e.token.replace('effect.semantic.','effect.')+'</div>'
+        +'<div class=fx-fig>'+e.figma+'</div>'
+        +'<div class=fx-desc>'+e.desc+'</div>'+flag+'</div></div>';
+    }
+    html+='</div>';
+  }
+  host.innerHTML=html;
+}
+
 /* ---------- nav scrollspy ---------- */
 function scrollspy(){
   const links=[...document.querySelectorAll('.site-nav a')];
@@ -133,12 +158,12 @@ function scrollspy(){
   const obs=new IntersectionObserver(es=>{
     es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.remove('on')); const a=map[e.target.id]; if(a) a.classList.add('on'); } });
   },{rootMargin:'-55% 0px -40% 0px'});
-  ['rationale','explorer','typography','scale'].forEach(id=>{ const el=document.getElementById(id); if(el) obs.observe(el); });
+  ['rationale','explorer','typography','scale','effects'].forEach(id=>{ const el=document.getElementById(id); if(el) obs.observe(el); });
 }
 
 /* ---------- boot ---------- */
 function boot(){
-  paint(); renderTypo(); renderScale(); scrollspy();
+  paint(); renderTypo(); renderScale(); renderEffects(); scrollspy();
   const clr=document.getElementById('clear'); if(clr) clr.onclick=EXP.clear;
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
