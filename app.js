@@ -84,6 +84,9 @@ function paint(){
   buildCol('c1',M1,1); buildCol('c2',M2,2); buildCol('c3',M3,3); buildCol('c4',M4,4); buildCol('c5',M5,5);
   const sel=document.getElementById('sel'); if(sel) sel.textContent=SEL?(SEL.startsWith('comp::')?SEL.slice(6):SEL):'nothing';
   const clr=document.getElementById('clear'); if(clr) clr.disabled=!SEL;
+  /* Pattern is an optional Tier-2 layer: light it up only when the traced chain routes through one. */
+  const pc=document.getElementById('c3'); const pat=pc?pc.closest('.col-pattern'):null;
+  if(pat){ const lit = !!SEL && M3.some(p=>H.has(p)); pat.classList.toggle('dim',!lit); pat.classList.toggle('active',lit); }
 }
 const EXP={ pick(id){ SEL=(SEL===id?null:id); paint(); }, clear(){ SEL=null; paint(); } };
 window.EXP=EXP;
@@ -99,16 +102,19 @@ function renderTypo(){
     html+='<div class=tg>'+g+'</div>';
     for(const r of groups[g]){
       const fs=cap(r.px);
+      const nv=r.variants.length;
+      // one group per role/size — normal/bold/etc. bound together, size shown once
+      html+='<div class=role-group><div class=role-head><span class=rn>'+r.name+'</span><span class=rsz>'+r.px+'px</span><span class=rct>'+nv+' weight'+(nv>1?'s':'')+' · same size</span></div>';
       for(const v of r.variants){
         const lh=v.lhPct/100, txt=v.caps?'AG':'Ag', tc=v.caps?'text-transform:uppercase;':'';
         const spec='<div class=tspec><span class=tsample style="font-size:'+fs+'px;line-height:'+lh+';font-weight:'+v.w+';'+tc+'">'+txt+'</span></div>';
-        const chips='<span class=chip>size: <b>'+r.sizeDisp+'</b></span>'
-          +'<span class=chip>lh: <b>'+v.lhDisp+' ('+v.lhPct+'%)</b></span>'
+        const chips='<span class=chip>lh: <b>'+v.lhDisp+' ('+v.lhPct+'%)</b></span>'
           +'<span class=chip>weight: <b>'+(v.w===700?'bold':'normal')+'</b></span>'
           +(v.caps?'<span class="chip caps">case: <b>uppercase</b></span>':'')
           +'<span class=chip>family: <b>'+r.famDisp+'</b></span>';
         html+='<div class=trow>'+spec+'<div class=tmeta><div class=trole>typography.role.'+r.name+'.'+v.key+'</div><div class=tchips>'+chips+'</div></div></div>';
       }
+      html+='</div>';
     }
   }
   host.innerHTML=html;
@@ -140,8 +146,12 @@ function renderEffects(){
     html+='<div class=fx-cat>'+cat+'</div><div class=fx-grid>';
     for(const e of groups[cat]){
       const flag=e.flag?'<span class=fx-flag>'+(typeof e.flag==='string'?e.flag:'flag')+'</span>':'';
+      // default sample is a white box; the button-edge effect shows on both button colors (blue + orange)
+      const boxes = cat==='Buttons'
+        ? '<span class="fx-box btn-blue" style="box-shadow:'+e.css+'"></span><span class="fx-box btn-orange" style="box-shadow:'+e.css+'"></span>'
+        : '<span class=fx-box style="box-shadow:'+e.css+'"></span>';
       html+='<div class=fx-card>'
-        +'<div class=fx-swatch><span class=fx-box style="box-shadow:'+e.css+'"></span></div>'
+        +'<div class=fx-swatch>'+boxes+'</div>'
         +'<div class=fx-meta><div class=fx-token>'+e.token.replace('effect.semantic.','effect.')+'</div>'
         +'<div class=fx-fig>'+e.figma+'</div>'
         +'<div class=fx-desc>'+e.desc+'</div>'+flag+'</div></div>';

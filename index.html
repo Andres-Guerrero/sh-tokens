@@ -83,16 +83,132 @@
   <section id="explorer">
     <div class="sec-hd">
       <span class="kicker">The chain</span>
-      <h2>Primitive → meaning → pattern → component</h2>
-      <p>Read left → right: a <b>primitive</b> gains <b>meaning</b> (②), is shaped into a stateful <b>pattern</b> (③), becomes a <b>component token</b> (④), and is <b>used</b> by components (⑤). Click anything to filter every column to just its chain.</p>
+      <h2>Three tiers — primitive, semantic, component</h2>
+      <p>Read left → right across <b>three tiers</b>: a <b>primitive</b> (①) gains <b>meaning</b> as a semantic token (②), then becomes a <b>component token</b> (③) and is <b>used</b> by components (④). Tier&nbsp;2 has two layers inside it — <b>Foundation / Identity</b> and an optional <b>Pattern</b> layer. Pattern stays dimmed until a token actually routes through it: click anything to trace its chain and the layers it touches light up.</p>
     </div>
+    <!-- mini field guide: what each tier/column is, the groups, and why the names -->
+    <div class="dict">
+      <div class="dict-hd"><span class="kicker">Field guide</span><h3>What's in each column, and why</h3></div>
+      <div class="dict-grid">
+
+        <div class="dict-card t1">
+          <div class="dt"><span class="dn">①</span>Tier 1 · Primitives</div>
+          <p class="dd">The raw options — every color, spacing, stroke and effect value, named by ramp (<span class="mono">gray.800</span>, <span class="mono">blue.700</span>). Components never use these directly.</p>
+          <p class="dwhy"><b>Why:</b> one place to define the palette — change a primitive and everything downstream follows.</p>
+        </div>
+
+        <div class="dict-card t2">
+          <div class="dt"><span class="dn">②</span>Tier 2 · Semantic <span class="dsub">two layers</span></div>
+          <p class="dd"><b>Foundation / Identity</b> — what a value <em>means</em>, by group:</p>
+          <ul class="dgroups">
+            <li><b>Foundations</b> — text, bg, border, icon, focus</li>
+            <li><b>Identities</b> — commerce (orange CTA), primary (blue CTA)</li>
+            <li><b>Communication</b> — feedback, status</li>
+            <li><b>Domain</b> — fulfillment, role, invite <span class="dnote">(SupplyHouse-specific)</span></li>
+            <li><b>Stroke · Effects</b> — widths, focus rings, shadows</li>
+          </ul>
+          <p class="dd"><b>Pattern</b> — a shared, multi-state <em>recipe</em> several components reuse:</p>
+          <p class="dchips"><span class="dchip">text (link)</span><span class="dchip">form-field</span><span class="dchip">form-control</span><span class="dchip">action-button</span><span class="dchip">menu-item</span><span class="dchip">navigation</span><span class="dchip">selectable</span><span class="dchip">selectable-card</span><span class="dchip">removable</span><span class="dchip">toggle</span><span class="dchip">switch</span><span class="dchip">breadcrumb</span></p>
+          <p class="dwhy"><b>Why the groups:</b> named by purpose, not appearance. <b>Why <span class="mono">.pattern.</span>:</b> it marks the shared-recipe layer so its names don't collide with foundations or components.</p>
+        </div>
+
+        <div class="dict-card t3">
+          <div class="dt"><span class="dn">③</span>Tier 3 · Component</div>
+          <p class="dd">Tokens scoped to a single component, for values nothing else shares (accordion, modal, tooltip, stepper).</p>
+          <p class="dwhy"><b>Why:</b> a home for the genuinely one-off, so it doesn't pollute the shared layers.</p>
+          <p class="dwhy" style="border-top:none;padding-top:2px;"><b>④ Usage</b> isn't a tier — it lists the components that consume each chain.</p>
+        </div>
+
+      </div>
+      <p class="dict-name"><b>Why the names:</b> every token reads <span class="mono">{type}.{group}.{variant}.{state}.{slot}</span> — e.g. <span class="mono">color.pattern.form-field.error.border</span> — drawn from a fixed vocabulary, so a token's job is legible from its name alone.</p>
+    </div>
+
+    <!-- value chain: one concrete example, between the field guide and the columns -->
+    <div class="res">
+      <div class="res-hd">
+        <span class="kicker">Value chain · start here</span>
+        <h3>Follow a token from raw value to the screen</h3>
+      </div>
+      <p class="res-lead">A token is just a raw value — a color or a number — that gets a name, picks up meaning, and is handed to a component. Below are two real journeys, read left → right (the same order as the columns below). Watch the middle step: <b>there are two valid routes</b>, and every token takes one or the other.</p>
+
+      <!-- Example 1 — Button, routes through a Pattern (skips Tier 3) -->
+      <div class="vc-ex">
+        <div class="vc-exhd"><span class="vc-num">1</span>Purchase button<span class="vc-route">middle step is a <b>Pattern</b></span></div>
+        <div class="vc-rail">
+          <div class="vc-stop">
+            <span class="vc-stage">Raw value</span><span class="vc-tier t1">Tier 1 · primitive</span>
+            <span class="vc-tok">color.orange.500</span>
+            <span class="vc-val"><span class="sw" style="background:#F15C02"></span>#F15C02</span>
+          </div>
+          <div class="vc-arrow">→</div>
+          <div class="vc-stop">
+            <span class="vc-stage">Meaning</span><span class="vc-tier">Tier 2 · identity</span>
+            <span class="vc-tok">commerce.accent.default.bg</span>
+            <span class="vc-gloss">the brand CTA color</span>
+          </div>
+          <div class="vc-arrow">→</div>
+          <div class="vc-stop">
+            <span class="vc-stage">Recipe</span><span class="vc-tier pat">Tier 2 · pattern</span>
+            <span class="vc-tok">action-button.purchase.default.bg</span>
+            <span class="vc-gloss">background in the default state</span>
+          </div>
+          <div class="vc-arrow">→</div>
+          <div class="vc-stop vc-end">
+            <span class="vc-stage">Used by</span><span class="vc-tier use">Component</span>
+            <span class="demo-btn">Add to cart</span>
+          </div>
+        </div>
+        <p class="vc-cap">The button takes its color from a <b>Pattern</b> — a shared recipe reused across button variants. It needs no component-specific token, so this chain <b>skips Tier 3</b>.</p>
+      </div>
+
+      <!-- Example 2 — Accordion, routes through a Tier-3 token (skips Pattern) -->
+      <div class="vc-ex">
+        <div class="vc-exhd"><span class="vc-num">2</span>Accordion chevron<span class="vc-route">middle step is a <b>Tier-3 token</b></span></div>
+        <div class="vc-rail">
+          <div class="vc-stop">
+            <span class="vc-stage">Raw value</span><span class="vc-tier t1">Tier 1 · primitive</span>
+            <span class="vc-tok">color.blue.700</span>
+            <span class="vc-val"><span class="sw" style="background:#07729C"></span>#07729C</span>
+          </div>
+          <div class="vc-arrow">→</div>
+          <div class="vc-stop">
+            <span class="vc-stage">Meaning</span><span class="vc-tier">Tier 2 · identity</span>
+            <span class="vc-tok">primary.default.icon</span>
+            <span class="vc-gloss">the primary icon blue</span>
+          </div>
+          <div class="vc-arrow">→</div>
+          <div class="vc-stop">
+            <span class="vc-stage">Component token</span><span class="vc-tier t3">Tier 3 · component</span>
+            <span class="vc-tok">accordion.product-spec…default.icon</span>
+            <span class="vc-gloss">this accordion's chevron color</span>
+          </div>
+          <div class="vc-arrow">→</div>
+          <div class="vc-stop vc-end">
+            <span class="vc-stage">Used by</span><span class="vc-tier use">Component</span>
+            <span class="demo-acc">Product specs <span class="chev">⌄</span></span>
+          </div>
+        </div>
+        <p class="vc-cap">The accordion adds its own <b>Tier-3 token</b> for a component-specific value and <b>skips the Pattern</b> layer. Same destination, different middle step.</p>
+      </div>
+
+      <p class="vc-payoff"><b>Two routes, one rule.</b> The middle step is either a Pattern (shared across components) or a Tier-3 token (specific to one) — never both. Either way the raw value still lives in exactly one place: change <span class="mono">orange.500</span> once, and every purchase button follows.</p>
+    </div>
+
+    <!-- the interactive columns -->
     <div class="trace-bar"><span>Traced: <span id="sel">nothing</span></span><button id="clear" disabled>clear</button></div>
     <div class="cols">
-      <div class="col"><div class="ch"><b><span class="n">①</span>Tier 1 · Primitive</b><small>the raw value — grouped by ramp</small></div><div class="list" id="c1"></div></div>
-      <div class="col"><div class="ch"><b><span class="n">②</span>Tier 2 · Foundation / Identity</b><small>the meaning — global purposes</small></div><div class="list" id="c2"></div></div>
-      <div class="col"><div class="ch"><b><span class="n">③</span>Tier 2 · Pattern</b><small>the contract — multi-state recipes</small></div><div class="list" id="c3"></div></div>
-      <div class="col"><div class="ch"><b><span class="n">④</span>Tier 3 · Component token</b><small>component-scoped — spacing &amp; size</small></div><div class="list" id="c4"></div></div>
-      <div class="col"><div class="ch"><b><span class="n">⑤</span>Usage · Component</b><small>where it shows up — by family</small></div><div class="list" id="c5"></div></div>
+      <!-- tier band (row 1) -->
+      <div class="band band-1"><span class="bn">①</span>Tier 1<small>Primitive</small></div>
+      <div class="band band-2"><span class="bn">②</span>Tier 2 · Semantic<small>one tier · two layers</small></div>
+      <div class="band band-3"><span class="bn">③</span>Tier 3<small>Component token</small></div>
+      <div class="band band-4"><span class="bn">④</span>Usage<small>Component</small></div>
+
+      <!-- lanes (row 2) -->
+      <div class="col col-1"><div class="ch"><b>Primitive</b><small>the raw value — grouped by ramp</small></div><div class="list" id="c1"></div></div>
+      <div class="col col-2a"><div class="ch"><b><span class="sublabel">2a</span>Foundation / Identity</b><small>the meaning — global purposes</small></div><div class="list" id="c2"></div></div>
+      <div class="col col-pattern dim"><div class="ch"><b><span class="sublabel">2b</span>Pattern</b><small>the contract — multi-state recipes</small><span class="opt-tag">optional</span></div><div class="pattern-why">Named <b>color.pattern.*</b> — the marker keeps this shared-contract layer from colliding with foundation names (e.g. <span class="mono">text</span>) or component names at Tier&nbsp;3.</div><div class="pattern-hint">Not every token routes through a pattern. This layer lights up when a traced chain uses one.</div><div class="list" id="c3"></div></div>
+      <div class="col col-3"><div class="ch"><b>Component token</b><small>component-scoped — spacing &amp; size</small></div><div class="list" id="c4"></div></div>
+      <div class="col col-4"><div class="ch"><b>Component</b><small>where it shows up — by family</small></div><div class="list" id="c5"></div></div>
     </div>
   </section>
 
